@@ -10,40 +10,36 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class Tareas extends AppCompatActivity {
 
-
-
-
-    private final String [] materias   = {"Android","Automatas 2","Topicos Avanzados" };
-    private ListView listaMaterias;
-
+    private final String [] tareas   = {"android tarea 1", "android tarea 2" };
+    private ListView listaTareas;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_tareas);
 
-        listaMaterias   = findViewById ( R.id.listaMaterias   );
 
+        listaTareas   = findViewById(R.id.listaTareas);
         // Se crea un ArrayAdapter: El 2o argumento debe ser el id de un recurso TEXTVIEW
         //                          El 3er argumento es la lista de Strings con los que se va a llenar
 
-        ArrayAdapter miadaptador = new ArrayAdapter(this,R.layout.lista_sencilla, materias);
-        listaMaterias.setAdapter(miadaptador);
+        ArrayAdapter miadaptador = new ArrayAdapter(this,R.layout.lista_sencilla, tareas);
+        listaTareas.setAdapter(miadaptador);
 
         // Establecemos el listener para el evento OnItemClick  del ListView
-        listaMaterias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listaTareas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(MainActivity.this, Tareas.class);
+                Intent intent = new Intent(Tareas.this, Alumnos.class);
 
-                Toast.makeText(MainActivity.this,"Jalo",Toast.LENGTH_SHORT );
+                Toast.makeText(Tareas.this,"Jalo",Toast.LENGTH_SHORT );
 
                 startActivity(intent);
 
             }});
     };
-}
 
+    }
