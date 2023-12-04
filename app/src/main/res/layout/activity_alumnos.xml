@@ -11,7 +11,9 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:text="TAREA: " />
+        android:text="TAREA: "
+        android:textAlignment="center"
+        android:textSize="34sp" />
 
     <ListView
         android:id="@+id/listaAlumnos"
