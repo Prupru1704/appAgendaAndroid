@@ -12,7 +12,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class Alumnos extends AppCompatActivity {
+public class AlumnosActivity extends AppCompatActivity {
     private String [] alumnos = {"carlito"," lalo","prupru"};
 
 

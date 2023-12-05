@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class Tareas extends AppCompatActivity {
+public class TareasActivity extends AppCompatActivity {
 
     private final String [] tareas   = {"android tarea 1", "android tarea 2" };
     private ListView listaTareas;
@@ -33,9 +33,9 @@ public class Tareas extends AppCompatActivity {
         listaTareas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(Tareas.this, Alumnos.class);
+                Intent intent = new Intent(TareasActivity.this, AlumnosActivity.class);
 
-                Toast.makeText(Tareas.this,"Jalo",Toast.LENGTH_SHORT );
+                Toast.makeText(TareasActivity.this,"Jalo",Toast.LENGTH_SHORT );
 
                 startActivity(intent);
 
