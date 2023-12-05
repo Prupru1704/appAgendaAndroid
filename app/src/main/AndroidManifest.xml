@@ -13,10 +13,10 @@
         android:theme="@style/Theme.ProyAgendaProfeApp"
         tools:targetApi="31">
         <activity
-            android:name=".Alumnos"
+            android:name=".AlumnosActivity"
             android:exported="false" />
         <activity
-            android:name=".Tareas"
+            android:name=".TareasActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

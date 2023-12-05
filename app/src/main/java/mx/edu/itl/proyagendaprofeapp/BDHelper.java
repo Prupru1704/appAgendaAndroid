@@ -11,19 +11,15 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 public class BDHelper extends SQLiteOpenHelper {
-    private static final String TAG        = "BaseDatosHelper";
-    private static final String DB_NAME    = "proyectoDB";
+    private static final String TAG        = "BDHelper";
+    private static final String DB_NAME    = "agendaDB";
     private static final int    DB_VERSION = 1;
-
-
-    public BDHelper(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
-    }
 
     // Constantes de la tabla materias
     private static final String MATERIAS_TABLE_NAME = "materias_tabla";
     private static final String MATERIAS_COL1       = "ID";
     private static final String MATERIAS_COL2       = "nombre";
+    private static final String MATERIAS_COL3       = "portada";
 
     // Constantes de la tabla tareas (Relacion - Una materia puede tener varias tareas)
     private static final String TAREAS_TABLE_NAME = "tareas_tabla";
@@ -53,12 +49,34 @@ public class BDHelper extends SQLiteOpenHelper {
     private static final String ALUMNOSMATERIAS_COL2       = "ID_ALUMNO";
     private static final String ALUMNOSMATERIAS_COL3       = "ID_MATERIA";
 
+    //----------------------------------------------------------------------------------------------
+
+
+    public BDHelper(Context context) {
+        super(context, DB_NAME, null, DB_VERSION );
+    }
+
+    //----------------------------------------------------------------------------------------------
+
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate ( SQLiteDatabase db ) {
+        crearTablas ( db );
+        insertarMaterias ( "Desarrolo en Android", R.drawable.android );
+    }
+
+    @Override
+    public void onUpgrade ( SQLiteDatabase db, int i, int i1 ) {
+        db.execSQL ( "DROP IF TABLE EXISTS " + MATERIAS_TABLE_NAME );
+        onCreate ( db );
+    }
+
+    // ------------------------     METODOS NORMALES     -------------------------------------------
+    public void crearTablas ( SQLiteDatabase db ) {
         String crearMateriasTabla = "CREATE TABLE " + MATERIAS_TABLE_NAME + " (" +
                 MATERIAS_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                MATERIAS_COL2 + " TEXT)";
+                MATERIAS_COL2 + " TEXT," +
+                MATERIAS_COL3 + " INTEGER)";
 
         String crearTareasTabla = "CREATE TABLE " + TAREAS_TABLE_NAME + " (" +
                 TAREAS_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -93,13 +111,25 @@ public class BDHelper extends SQLiteOpenHelper {
         db.execSQL ( crearAluTarTabla );
     }
 
-    @Override
-    public void onUpgrade ( SQLiteDatabase db, int i, int i1 ) {
-        /**
-         * Este metodo se ejecuta cuando se cambia la version de la base de datos
-         * y por el momento no se ha cambiado nada
-         */
+    public void insertarMaterias ( String materia, int materiaImg ) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put ( MATERIAS_COL2, materia );
+        contentValues.put ( MATERIAS_COL3, materiaImg );
+
+        Log.d(TAG, "addDatos: Agregando " + materia + " a " + MATERIAS_TABLE_NAME);
+
+        long resultado = db.insert(MATERIAS_TABLE_NAME, null, contentValues);
+
+        // si se insertó correctamente resultado valdrá -1
+        if ( resultado == -1 ) {
+            Log.d ( MATERIAS_TABLE_NAME, "TODO BIEN" );
+        } else {
+            Log.e ( MATERIAS_TABLE_NAME, "TODO MAL" );
+        }
     }
 
-    // ------------------------ METODOS DE CONSULTAS SQL ------------------------
+    // ------------------------ METODOS DE CONSULTAS SQL -------------------------------------------
+
 }
