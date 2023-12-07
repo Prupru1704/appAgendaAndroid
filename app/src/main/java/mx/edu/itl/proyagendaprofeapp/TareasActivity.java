@@ -26,7 +26,7 @@ public class TareasActivity extends AppCompatActivity {
         // Se crea un ArrayAdapter: El 2o argumento debe ser el id de un recurso TEXTVIEW
         //                          El 3er argumento es la lista de Strings con los que se va a llenar
 
-        ArrayAdapter miadaptador = new ArrayAdapter(this,R.layout.lista_sencilla, tareas);
+        ArrayAdapter miadaptador = new ArrayAdapter(this,R.layout.lista_item_sencilla, tareas);
         listaTareas.setAdapter(miadaptador);
 
         // Establecemos el listener para el evento OnItemClick  del ListView

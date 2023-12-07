@@ -27,26 +27,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:layout_gravity="bottom|end"
+        <Button
+            android:id="@+id/btnAgregar"
+            android:layout_width="112dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#9C8449"
-            android:src="@android:drawable/ic_input_add"
-            tools:src="@android:drawable/ic_input_add" />
+            android:backgroundTint="#9C8449"
+            android:text="Agregar"
+            android:textSize="22sp"
+            app:icon="@drawable/agregar2"
+            app:iconGravity="textEnd" />
 
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:layout_gravity="bottom|end"
+        <Button
+            android:id="@+id/IrAcercaDe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#9C8449"
-            android:src="@android:drawable/ic_dialog_info"
-            tools:src="@android:drawable/ic_dialog_info" />
+            android:backgroundTint="#9C8449"
+            android:onClick="btnAcercaDe"
+            android:textSize="22sp"
+            app:icon="@drawable/informacion2"
+            app:iconGravity="textStart" />
     </LinearLayout>
 </LinearLayout>

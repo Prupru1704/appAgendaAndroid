@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="#FFEAEA"
     android:orientation="vertical"
     tools:context=".TareasActivity">
 
@@ -11,15 +12,17 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:text="TAREA: "
+        android:text="ALUMNOS"
         android:textAlignment="center"
+        android:textColor="#9C8449"
         android:textSize="34sp" />
 
     <ListView
         android:id="@+id/listaAlumnos"
         android:layout_width="match_parent"
         android:layout_height="614dp"
-        android:choiceMode="multipleChoice" >
+        android:choiceMode="multipleChoice"
+        android:foregroundTint="#9C8449">
 
     </ListView>
 
@@ -27,6 +30,10 @@
         android:id="@+id/Confirmar"
         android:layout_width="match_parent"
         android:layout_height="66dp"
+        android:backgroundTint="#9C8449"
         android:onClick="btnElementosSeleccionadosClick"
-        android:text="Confirmar" />
+        android:text="Confirmar"
+        android:textSize="22sp"
+        app:icon="@drawable/confirmacion2"
+        app:iconGravity="textEnd" />
 </LinearLayout>

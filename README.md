@@ -1,5 +1,4 @@
-# Proyecto AgendaApp
-## Cambios realizados al cascaron
+# Proyecto AgendaApp Cambios realizados al cascaron
 
 | Numero | Cambio      | Descripción                                                                                   |
 |--------|-------------|-----------------------------------------------------------------------------------------------|
