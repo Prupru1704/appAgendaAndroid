@@ -61,6 +61,14 @@ public class MainActivity extends AppCompatActivity {
             }});
     };
 
+    public void btnAcercaDe ( View v ) {
+        setContentView ( R.layout.acercade_layout );
+    }
+
+    public void btnVolverMain( View v ){
+        setContentView ( R.layout.activity_main );
+    }
+
     ///---------------------------------------------------------------------------------------------
     class AdaptadorMateria extends ArrayAdapter {
         private Context contexto;
