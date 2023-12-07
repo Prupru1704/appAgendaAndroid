@@ -35,8 +35,9 @@ public class AlumnosActivity extends AppCompatActivity {
         ArrayAdapter adaptador = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice
                 , alumnos);
         listaAlumnos.setAdapter(adaptador);
+        Boolean checked[]= bdHelper.getAlumnosTareaCumplio(1);
         for(int i = 0; i < alumnos.length;i++){
-                listaAlumnos.setItemChecked(i,bdHelper.getAlumnosTareaCumplio(1));
+                listaAlumnos.setItemChecked(i,checked[i]);
         }
     }
     public void btnElementosSeleccionadosClick ( View v ) {

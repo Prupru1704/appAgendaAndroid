@@ -198,7 +198,7 @@ public class BDHelper extends SQLiteOpenHelper {
         String args[] = {ID_alumno};
 
         // Consulta
-        Cursor cursor = db.query ( ALUMNOS_TABLE_NAME, columnas, selccion, args, null, null, null );
+        Cursor cursor = db.query ( ALUMNOS_TABLE_NAME, columnas, selccion, args, null, null, ALUMNOS_COL2 +" DESC" );
 
         // Verificar si se realizo correctamente la consulta
         String nombreNoControl = "";
@@ -311,16 +311,17 @@ public class BDHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Columnas deseadas
-        String columnas[] = { ALUMNOSMATERIAS_COL1};
+        String columnas[] = { ALUMNOSMATERIAS_COL1 ,ALUMNOS_COL3,ALUMNOS_COL2};
 
         // Seleccionar por...
-        String selccion = ALUMNOSMATERIAS_COL2+ "=?";
+        String selccion = ALUMNOS_COL1 + "="+ ALUMNOSMATERIAS_COL1 + " AND " + ALUMNOSMATERIAS_COL2+ "=?";
 
         // Parametro que reemplaza "?"
         String args[] = { id_materia + "" };
 
+        String tablas = ALUMNOSMATERIAS_TABLE_NAME + "," + ALUMNOS_TABLE_NAME;
         // Consulta
-        Cursor cursor = db.query ( ALUMNOSMATERIAS_TABLE_NAME, columnas, selccion, args, null, null, null );
+        Cursor cursor = db.query (tablas , columnas, selccion, args, null, null,ALUMNOS_COL2 + " DESC" );
 
         String[] result = new String[cursor.getCount()];
         cursor.moveToFirst();
@@ -359,59 +360,47 @@ public class BDHelper extends SQLiteOpenHelper {
         return result;
     }
 
-    public Cursor getAlumnosTareaCumplio ( long id_tarea ) {
+    public Boolean[] getAlumnosTareaCumplio ( long id_tarea ) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Columnas deseadas
-        String columnas[] = { ALUMNOSTAREAS_COL2 };
+        String columnas[] = { ALUMNOSTAREAS_COL3 };
 
         // Seleccionar por...
-        String selccion = ALUMNOSTAREAS_COL3 + "=?";
+        String selccion = ALUMNOSTAREAS_COL2 + "=? AND "+ ALUMNOSTAREAS_COL1 + " = " + ALUMNOS_COL1 ;
 
         // Parametro que reemplaza "?"
         String args[] = { id_tarea + "" };
 
+        String tablas = ALUMNOS_TABLE_NAME + "," + ALUMNOSTAREAS_TABLE_NAME;
         // Consulta - Obtener id de los alumnos en ALUMNOSTAREAS
         Cursor cursor = db.query (
-                ALUMNOSTAREAS_TABLE_NAME,
+                tablas,
                 columnas,
                 selccion,
                 args,
-                null, null, null );
+                null, null, ALUMNOS_COL2 + " DESC" );
 
         // Agrupar id's
-        List< Long > idsAlumnos = new ArrayList();
+        Boolean cumplio[]= new Boolean[cursor.getCount()];
+        int contador =0;
 
         if ( cursor != null && cursor.moveToFirst()) {
             do {
-                int colIndex = cursor.getColumnIndex ( ALUMNOSTAREAS_COL2 );
-                long idAlumno = cursor.getLong ( colIndex );
-                idsAlumnos.add ( idAlumno );
+                int colIndex = cursor.getColumnIndex ( ALUMNOSTAREAS_COL3 );
+                if ( 0 ==cursor.getInt( colIndex )){
+                    cumplio[contador]=false;
+                }else
+                {
+                    cumplio[contador]=true;
+                }
+                contador++;
             } while ( cursor.moveToNext() );
 
             cursor.close();
         }
 
-        // Construir parametro para la nueva consulta
-        String argsAlumnos[] = new String [ idsAlumnos.size() ];
-
-        // Se castea el id a String
-        for ( int i = 0; i < idsAlumnos.size(); i++ ) {
-            argsAlumnos [ i ] = idsAlumnos.get ( i ) + "";
-        }
-
-        // Nueva consulta
-        String columnasAlumnos[] = { ALUMNOS_COL1, ALUMNOS_COL2 };
-        String selccionAlumnos = ALUMNOS_COL1 + "=?";
-
-        Cursor alumnos = db.query (
-                ALUMNOS_TABLE_NAME,
-                columnasAlumnos,
-                selccionAlumnos,
-                argsAlumnos,
-                null, null, null );
-
-        return alumnos;
+        return cumplio;
     }
 
     public void updateTareaCumplida ( long id_tarea, long id_alumno ) {
