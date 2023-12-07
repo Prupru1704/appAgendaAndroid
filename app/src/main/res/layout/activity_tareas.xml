@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".AlumnosActivity">
 
@@ -11,14 +12,13 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FF8C69"
-        android:text="MATERIA"
+        android:text="TAREAS"
         android:textAlignment="center"
+        android:textColor="#9C8449"
         android:textSize="34sp" />
 
     <ListView
         android:id="@+id/listaTareas"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#92CAF6" />
+        android:layout_height="match_parent" />
 </LinearLayout>
