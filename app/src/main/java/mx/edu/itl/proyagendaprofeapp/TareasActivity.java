@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 public class TareasActivity extends AppCompatActivity {
 
-    private final String [] tareas   = {"android tarea 1", "android tarea 2" };
+
     private ListView listaTareas;
 
     private BDHelper bdHelper;
@@ -24,7 +24,7 @@ public class TareasActivity extends AppCompatActivity {
         bdHelper = new BDHelper(this);
         setContentView(R.layout.activity_tareas);
 
-
+        String [] tareas = bdHelper.getTareasMateria(bdHelper.IdMateriaPorNombre("Android"));
         listaTareas   = findViewById(R.id.listaTareas);
         // Se crea un ArrayAdapter: El 2o argumento debe ser el id de un recurso TEXTVIEW
         //                          El 3er argumento es la lista de Strings con los que se va a llenar
@@ -38,14 +38,19 @@ public class TareasActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(TareasActivity.this, AlumnosActivity.class);
 
-                Toast.makeText(TareasActivity.this,"Jalo",Toast.LENGTH_SHORT );
-                boolean baseDatos = bdHelper.insertarMaterias("android",R.drawable.android);
 
-                if(baseDatos == false){
-                        startActivity(intent);
-                }else{
-                    Log.e("fallo","fallo");
-                }
+                //bdHelper.insertarAlumno("David","Android");
+                //bdHelper.insertarAlumno("Carlos","Android");
+                //bdHelper.insertarAlumno("Eduardo","Android");
+                //bdHelper.insertarTarea("appBanderas","Android");
+                //bdHelper.insertarTarea("appFotos","Android");
+
+
+                    startActivity(intent);
+
+
+
+
 
             }});
     };
