@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.BoringLayout;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -34,6 +35,7 @@ public class BDHelper extends SQLiteOpenHelper {
     private static final String ALUMNOS_TABLE_NAME = "alumnos_tabla";
     private static final String ALUMNOS_COL1       = "ID";
     private static final String ALUMNOS_COL2       = "nombre";
+    private static final String ALUMNOS_COL3 = "No_control";
 
 
     // Relacion - Una tarea se realiza por muchos alumnos
@@ -85,7 +87,8 @@ public class BDHelper extends SQLiteOpenHelper {
 
         String crearAlumnosTabla = "CREATE TABLE " + ALUMNOS_TABLE_NAME + " (" +
                 ALUMNOS_COL1 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                ALUMNOS_COL2 + " TEXT)";
+                ALUMNOS_COL2 + " TEXT, "+
+                ALUMNOS_COL3 + "INTEGER UNIQUE " + ")";
 
         String crearAluMatTabla = "CREATE TABLE " + ALUMNOSMATERIAS_TABLE_NAME + " (" +
                 ALUMNOSMATERIAS_COL1 + " INTEGER, " +
@@ -108,53 +111,112 @@ public class BDHelper extends SQLiteOpenHelper {
         db.execSQL ( crearAluTarTabla );
     }
 
-    public boolean insertarMaterias ( String materia, int materiaImg ) {
+    public void insertarMaterias ( String materia, int materiaImg ) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put ( MATERIAS_COL1, 1);
         contentValues.put ( MATERIAS_COL2, materia );
         contentValues.put ( MATERIAS_COL3, materiaImg );
+
 
         Log.d(TAG, "addDatos: Agregando " + materia + " a " + MATERIAS_TABLE_NAME);
 
         long resultado = db.insert(MATERIAS_TABLE_NAME, null, contentValues);
 
         // si se insertó correctamente resultado valdrá -1
-        if ( resultado == -1 ) {
-            return  false;
+        if ( resultado != -1 ) {
+            Log.d ( TAG, "Registro de Materia correcto" );
         } else {
-            return true;
+            Log.e ( TAG, "No se registró la Materia" );
         }
     }
 
-    public void insertarAlumno ( String nombre, String materia ) {
+    public void insertarAlumno (String no_Control, String nombre, String materia ) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
         // Primero registrar el alumno
-        contentValues.put ( ALUMNOS_COL1, 1 );
         contentValues.put ( ALUMNOS_COL2, nombre );
+        contentValues.put ( ALUMNOS_COL3, no_Control);
 
+        db.insert ( ALUMNOS_TABLE_NAME, null, contentValues );
         // Realiar consulta para obtener id's de materia y alumno
-        long idAlumno = db.insert ( ALUMNOS_TABLE_NAME, null, contentValues );
-        long idMateria = IdMateriaPorNombre ( db, materia );
+        long idAlumno = IdAlumnoPorNombre(nombre);
+
+        long idMateria = IdMateriaPorNombre ( materia );
 
         // Insertar registro en la tabla de la relación
         ContentValues alumno_materia = new ContentValues();
-        alumno_materia.put ( ALUMNOSMATERIAS_COL1, idAlumno );
+        alumno_materia.put( ALUMNOSMATERIAS_COL1, idAlumno);
         alumno_materia.put ( ALUMNOSMATERIAS_COL2, idMateria );
+
 
         long idAlumno_Materia = db.insert ( ALUMNOSMATERIAS_TABLE_NAME, null, alumno_materia );
 
         // Veificar si la insercion funcionó
         if ( idAlumno != -1 && idMateria != -1 && idAlumno_Materia != -1  ) {
-            Log.e ( TAG, "No se pudo registrar alumno" );
+            Log.e ( TAG, "Se pudo registrar alumno" );
         }
 
     }
+    public long IdAlumnoPorNombre ( String alumno ) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Columna a salvar
+        String columnas[] = { ALUMNOS_COL1 };
 
-    public long IdMateriaPorNombre ( SQLiteDatabase db, String materia ) {
+        // Seleccionar por...
+        String selccion = ALUMNOS_COL2 + "=?";
+
+        // Parametro que reemplaza "?"
+        String args[] = { alumno };
+
+        // Consulta
+        Cursor cursor = db.query ( ALUMNOS_TABLE_NAME, columnas, selccion, args, null, null, null );
+
+        // Verificar si se realizo correctamente la consulta
+        long idAlumno = -1;
+
+        if ( cursor != null && cursor.moveToFirst() ) {
+            int colIndex = cursor.getColumnIndex ( ALUMNOS_COL1 );
+            idAlumno = cursor.getLong ( colIndex );
+            cursor.close();
+        }
+
+        return  idAlumno;
+
+    }
+
+    public String NombrePorIDAlumno ( String ID_alumno ) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Columna a salvar
+        String columnas[] = { ALUMNOS_COL3 , ALUMNOS_COL2 };
+
+        // Seleccionar por...
+        String selccion = ALUMNOS_COL1 + "=?";
+
+        // Parametro que reemplaza "?"
+        String args[] = {ID_alumno};
+
+        // Consulta
+        Cursor cursor = db.query ( ALUMNOS_TABLE_NAME, columnas, selccion, args, null, null, null );
+
+        // Verificar si se realizo correctamente la consulta
+        String nombreNoControl = "";
+
+        if ( cursor != null && cursor.moveToFirst() ) {
+            int colIndex1 = cursor.getColumnIndex ( ALUMNOS_COL3 );
+            nombreNoControl = cursor.getString( colIndex1);
+            int colIndex2 = cursor.getColumnIndex ( ALUMNOS_COL2 );
+            nombreNoControl = nombreNoControl + " "+ cursor.getString(colIndex2);
+            cursor.close();
+        }
+
+        return  nombreNoControl;
+
+    }
+
+    public long IdMateriaPorNombre (  String materia ) {
+        SQLiteDatabase db = this.getWritableDatabase();
         // Columna a salvar
         String columnas[] = { MATERIAS_COL1 };
 
@@ -184,11 +246,10 @@ public class BDHelper extends SQLiteOpenHelper {
         ContentValues tareaValues = new ContentValues();
 
         // Primero registrar id y nombre de la tarea
-        tareaValues.put ( TAREAS_COL1, 1 );
         tareaValues.put ( TAREAS_COL2, nombre );
 
         // Buscar el id de la materia correspondiente a la tarea
-        long idMateria = IdMateriaPorNombre ( db, materia );
+        long idMateria = IdMateriaPorNombre (  materia );
 
         // Terminar registro en la tabla de tareas
         tareaValues.put ( TAREAS_COL3, idMateria );
@@ -223,6 +284,7 @@ public class BDHelper extends SQLiteOpenHelper {
                 ContentValues tarea_alumno = new ContentValues();
                 tarea_alumno.put ( ALUMNOSTAREAS_COL1, idAlumno );
                 tarea_alumno.put ( ALUMNOSTAREAS_COL2, tarea_pk );
+                tarea_alumno.put( ALUMNOSTAREAS_COL3,0);
 
                 long idAsignacion = db.insert ( ALUMNOSTAREAS_TABLE_NAME, null, tarea_alumno );
 
@@ -231,7 +293,7 @@ public class BDHelper extends SQLiteOpenHelper {
                 } else {
                     Log.d(TAG, "Se asigno la tarea correctamente");
                 }
-            } while ( cursor.moveToFirst() );
+            } while ( cursor.moveToNext() );
         }
     }
     // ------------------------ METODOS DE CONSULTAS SQL -------------------------------------------
@@ -242,14 +304,43 @@ public class BDHelper extends SQLiteOpenHelper {
         return data;
     }
 
-    public Cursor getTareasMateria ( long id_materia ) {
+
+
+
+    public String[] getAlumnosMateria ( long id_materia ) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Columnas deseadas
+        String columnas[] = { ALUMNOSMATERIAS_COL1};
+
+        // Seleccionar por...
+        String selccion = ALUMNOSMATERIAS_COL2+ "=?";
+
+        // Parametro que reemplaza "?"
+        String args[] = { id_materia + "" };
+
+        // Consulta
+        Cursor cursor = db.query ( ALUMNOSMATERIAS_TABLE_NAME, columnas, selccion, args, null, null, null );
+
+        String[] result = new String[cursor.getCount()];
+        cursor.moveToFirst();
+        for(int i = 0; i < cursor.getCount(); i++){
+            String row = cursor.getString(0);
+            //You can here manipulate a single string as you please
+            result[i] = this.NombrePorIDAlumno(row);
+            cursor.moveToNext();
+        }
+        return result;
+    }
+
+    public String[] getTareasMateria ( long id_materia ) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Columnas deseadas
         String columnas[] = { TAREAS_COL1, TAREAS_COL2 };
 
         // Seleccionar por...
-        String selccion = MATERIAS_COL1 + "=?";
+        String selccion = TAREAS_COL3 + "=?";
 
         // Parametro que reemplaza "?"
         String args[] = { id_materia + "" };
@@ -257,10 +348,18 @@ public class BDHelper extends SQLiteOpenHelper {
         // Consulta
         Cursor cursor = db.query ( TAREAS_TABLE_NAME, columnas, selccion, args, null, null, null );
 
-        return cursor;
+        String[] result = new String[cursor.getCount()];
+        cursor.moveToFirst();
+        for(int i = 0; i < cursor.getCount(); i++){
+            String row = cursor.getString(1);
+            //You can here manipulate a single string as you please
+            result[i] = row;
+            cursor.moveToNext();
+        }
+        return result;
     }
 
-    public Cursor getAlumnosTarea ( long id_tarea ) {
+    public Cursor getAlumnosTareaCumplio ( long id_tarea ) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         // Columnas deseadas
@@ -333,4 +432,6 @@ public class BDHelper extends SQLiteOpenHelper {
             Log.e ( TAG, "No se actualizó ningún registro" );
         }
     }
+
+
 }

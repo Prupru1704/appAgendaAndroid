@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // Inciair SQLite
         baseDatosHelper = new BDHelper ( MainActivity.this );
 
@@ -55,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, TareasActivity.class);
 
                 Toast.makeText(MainActivity.this,"Jalo",Toast.LENGTH_SHORT );
+
+              //baseDatosHelper.insertarTarea("appFotos","Android");
+              //baseDatosHelper.insertarTarea("appVideos","Android");
 
                 startActivity(intent);
 
