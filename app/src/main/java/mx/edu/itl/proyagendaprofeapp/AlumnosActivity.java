@@ -44,21 +44,10 @@ public class AlumnosActivity extends AppCompatActivity {
         //SELECT alumnos_tabla.nombre, alumnos_tabla.No_control, alumnos_tareas_tabla.cumplio from alumnos_tareas_tabla, alumnos_tabla WHERE alumnos_tabla.ID = alumnos_tareas_tabla.ID_ALUMNO AND alumnos_tareas_tabla.ID_TAREA = 1
         seleccionados = new ArrayList<String>();
         SparseBooleanArray elementosMarcados = listaAlumnos.getCheckedItemPositions();
-        for (int i = 0; i < elementosMarcados.size(); i++) {
-            int llave = elementosMarcados. keyAt(i);
-            boolean valor = elementosMarcados.get(llave);
-            if( valor){
-                seleccionados.add(listaAlumnos.getItemAtPosition(llave).toString());
-            }
 
-        }
+        bdHelper.updateTareaCumplida(1, elementosMarcados);
 
-        if(seleccionados.isEmpty()){
-            Toast.makeText(this,"No hay elementos seleccionados",Toast.LENGTH_SHORT).show();
-        }else{
 
-            Toast.makeText(this,"Seleccionados"+ seleccionados,Toast.LENGTH_SHORT).show();
-        }
     }
 
 }

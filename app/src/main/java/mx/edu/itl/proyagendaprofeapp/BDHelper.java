@@ -1,5 +1,6 @@
 package mx.edu.itl.proyagendaprofeapp;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.BoringLayout;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 
 import androidx.annotation.Nullable;
 
@@ -403,23 +405,73 @@ public class BDHelper extends SQLiteOpenHelper {
         return cumplio;
     }
 
-    public void updateTareaCumplida ( long id_tarea, long id_alumno ) {
+    @SuppressLint("Range")
+    public void updateTareaCumplida (long id_tarea , SparseBooleanArray cumplio) {
+
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues valor = new ContentValues();
-        valor.put ( ALUMNOSTAREAS_COL3, 1 ); // Si el alumno cunmplio la tarea se marca un 1
 
-        // Se cambiará el registro donde los ids coincidan con el los que se indican
-        String where = ALUMNOSTAREAS_COL2 + "=? AND " + ALUMNOSTAREAS_COL1 + "=?";
-        String args[] = { id_tarea + "", id_alumno + "" };
 
-        int registroActualizado = db.update ( ALUMNOSTAREAS_TABLE_NAME, valor, where, args );
+        // Columnas deseadas
+        String columnas[] = { ALUMNOS_COL1 };
 
-        // Verificar si se realizaron actualizaciones
-        if ( registroActualizado > 0 ) {
-            Log.d ( TAG, "Se actualizó el cumplimiento de la tarea correctamente" );
-        } else {
-            Log.e ( TAG, "No se actualizó ningún registro" );
+        // Seleccionar por...
+        String selccion = ALUMNOSTAREAS_COL2 + "=? AND "+ ALUMNOSTAREAS_COL1 + " = " + ALUMNOS_COL1 ;
+
+        // Parametro que reemplaza "?"
+        String args[] = { id_tarea + "" };
+
+        String tablas = ALUMNOS_TABLE_NAME + "," + ALUMNOSTAREAS_TABLE_NAME;
+        // Consulta - Obtener id de los alumnos en ALUMNOSTAREAS
+        Cursor cursor1 = db.query (
+                tablas,
+                columnas,
+                selccion,
+                args,
+                null, null, ALUMNOS_COL2 + " DESC" );
+
+        // Agrupar id's
+        int cumplioIDS[]= new int[cursor1.getCount()];
+        int contador =0;
+        if ( cursor1 != null && cursor1.moveToFirst()) {
+            do {
+                int colIndex = cursor1.getColumnIndex ( ALUMNOS_COL1 );
+                cumplioIDS[contador] = cursor1.getInt ( colIndex );
+
+
+                contador++;
+            } while ( cursor1.moveToNext() );
+
+            cursor1.close();
         }
+
+
+        for(int i = 0; i<cumplio.size();i++){
+            ContentValues valor = new ContentValues();
+            int llave = cumplio. keyAt(i);
+            boolean check = cumplio.get(llave);
+            if(check)
+            valor.put ( ALUMNOSTAREAS_COL3, 1 ); // Si el alumno cunmplio la tarea se marca un 1
+            else
+            valor.put( ALUMNOSTAREAS_COL3,0);
+
+            int id_alumno = cumplioIDS[i];
+            // Se cambiará el registro donde los ids coincidan con el los que se indican
+            String where = ALUMNOSTAREAS_COL2 + "=? AND " + ALUMNOSTAREAS_COL1 + "=?";
+            String args1[] = { id_tarea + "", id_alumno + "" };
+
+            int registroActualizado = db.update ( ALUMNOSTAREAS_TABLE_NAME, valor, where, args1 );
+
+            // Verificar si se realizaron actualizaciones
+            if ( registroActualizado > 0 ) {
+                Log.d ( TAG, "Se actualizó el cumplimiento de la tarea correctamente" );
+            } else {
+                Log.e ( TAG, "No se actualizó ningún registro" );
+            }
+        }
+
+
+
+
     }
 
 
