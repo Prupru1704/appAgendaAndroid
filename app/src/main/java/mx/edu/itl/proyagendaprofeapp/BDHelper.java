@@ -37,14 +37,14 @@ public class BDHelper extends SQLiteOpenHelper {
     private static final String ALUMNOS_TABLE_NAME = "alumnos_tabla";
     private static final String ALUMNOS_COL1       = "ID";
     private static final String ALUMNOS_COL2       = "nombre";
-    private static final String ALUMNOS_COL3 = "No_control";
+    private static final String ALUMNOS_COL3       = "No_control";
 
 
     // Relacion - Una tarea se realiza por muchos alumnos
     //          y muchos alumnos realizan una tarea
     private static final String ALUMNOSTAREAS_TABLE_NAME = "alumnos_tareas_tabla";
-    private static final String ALUMNOSTAREAS_COL1    = "ID_ALUMNO";
-    private static final String ALUMNOSTAREAS_COL2      = "ID_TAREA";
+    private static final String ALUMNOSTAREAS_COL1       = "ID_ALUMNO";
+    private static final String ALUMNOSTAREAS_COL2       = "ID_TAREA";
     private static final String ALUMNOSTAREAS_COL3       = "cumplio";
 
 
@@ -185,7 +185,6 @@ public class BDHelper extends SQLiteOpenHelper {
         }
 
         return  idAlumno;
-
     }
 
     public String NombrePorIDAlumno ( String ID_alumno ) {
@@ -444,15 +443,14 @@ public class BDHelper extends SQLiteOpenHelper {
             cursor1.close();
         }
 
-
         for(int i = 0; i<cumplio.size();i++){
             ContentValues valor = new ContentValues();
             int llave = cumplio. keyAt(i);
             boolean check = cumplio.get(llave);
             if(check)
-            valor.put ( ALUMNOSTAREAS_COL3, 1 ); // Si el alumno cunmplio la tarea se marca un 1
+                valor.put ( ALUMNOSTAREAS_COL3, 1 ); // Si el alumno cunmplio la tarea se marca un 1
             else
-            valor.put( ALUMNOSTAREAS_COL3,0);
+                valor.put( ALUMNOSTAREAS_COL3,0);
 
             int id_alumno = cumplioIDS[i];
             // Se cambiará el registro donde los ids coincidan con el los que se indican
@@ -468,11 +466,53 @@ public class BDHelper extends SQLiteOpenHelper {
                 Log.e ( TAG, "No se actualizó ningún registro" );
             }
         }
-
-
-
-
     }
 
+    public String[] getAlumnosTareas ( String nombreTarea ) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Otener id de la tarea por nombre
+        String queryID = "SELECT " + TAREAS_COL1 +
+                "FROM " + TAREAS_TABLE_NAME +
+                " WHERE " + TAREAS_COL2 + " = " + nombreTarea;
 
+        Cursor cursorTemp = db.rawQuery ( queryID, null );
+        int id_tarea = Integer.parseInt ( cursorTemp.getString ( 0 ) );
+
+        // Construir raw query para alumnos
+        String query = "SELECT " +
+                ALUMNOS_COL3 + ", " +
+                ALUMNOS_COL2 + ", " +
+                ALUMNOSTAREAS_COL3 + " FROM " +
+                ALUMNOSTAREAS_TABLE_NAME +
+                " INNER JOIN " + ALUMNOS_TABLE_NAME +
+                " ON " + ALUMNOSTAREAS_TABLE_NAME + "." + ALUMNOSTAREAS_COL2 + " = " + ALUMNOS_TABLE_NAME + "." + ALUMNOS_COL1 +
+                " WHERE " + ALUMNOSTAREAS_COL2 + " = " + id_tarea;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        // Verificar si el cursor contiene datos
+        if (cursor != null && cursor.moveToFirst()) {
+            // Concatenar columnas
+            String resultados[] = new String [ cursor.getCount() ];
+            int i = 0;
+            do {
+
+                String alumno = cursor.getString ( 0 ) +
+                        "," + cursor.getString ( 1 ) +
+                        "," + cursor.getString ( 2 );
+
+                resultados [ i ] = alumno;
+                i++;
+            } while ( cursor.moveToFirst() );
+
+            cursor.close();
+            return  resultados;
+        } else {
+            // Manejar el caso donde no hay datos
+            if (cursor != null) {
+                cursor.close();
+            }
+            return new String[0];
+        }
+    }
 }

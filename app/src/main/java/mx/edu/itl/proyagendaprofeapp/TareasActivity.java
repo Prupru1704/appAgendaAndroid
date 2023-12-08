@@ -18,13 +18,21 @@ public class TareasActivity extends AppCompatActivity {
 
     private BDHelper bdHelper;
 
+    private int idTarea;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bdHelper = new BDHelper(this);
         setContentView(R.layout.activity_tareas);
 
-        String [] tareas = bdHelper.getTareasMateria(bdHelper.IdMateriaPorNombre("Android"));
+        // Obtener intent y sacar nombre de la materia
+        Intent intent = getIntent();
+        String nombreMateria = String.valueOf(intent.getIntExtra ( "nombreMateria", -1 ));
+        idTarea = intent.getIntExtra ( "idMateria", -1 );
+
+        String [] tareas = bdHelper.getTareasMateria(bdHelper.IdMateriaPorNombre(nombreMateria));
+
         listaTareas   = findViewById(R.id.listaTareas);
         // Se crea un ArrayAdapter: El 2o argumento debe ser el id de un recurso TEXTVIEW
         //                          El 3er argumento es la lista de Strings con los que se va a llenar
@@ -36,22 +44,17 @@ public class TareasActivity extends AppCompatActivity {
         listaTareas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(TareasActivity.this, AlumnosActivity.class);
-
-
                 //bdHelper.insertarAlumno("David","Android");
                 //bdHelper.insertarAlumno("Carlos","Android");
                 //bdHelper.insertarAlumno("Eduardo","Android");
                 //bdHelper.insertarTarea("appBanderas","Android");
                 //bdHelper.insertarTarea("appFotos","Android");
 
-
-                    startActivity(intent);
-
-
-
-
-
+                // Mandar el nombre de la tarea
+                Intent intent = new Intent(TareasActivity.this, AlumnosActivity.class);
+                intent.putExtra ( "nombreTarea", tareas [ i ] );
+                intent.putExtra ( "nombreMateria", nombreMateria );
+                startActivity(intent);
             }});
     };
 
