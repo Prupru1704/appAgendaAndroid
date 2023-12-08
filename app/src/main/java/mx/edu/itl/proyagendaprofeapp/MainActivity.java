@@ -21,10 +21,11 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private ListView lstvMaterias;
-    BDHelper baseDatosHelper;
 
+    BDHelper baseDatosHelper ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        baseDatosHelper = new BDHelper ( this );
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -38,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
             int portadas[] = new int[cursor.getCount()];
             String ids[] = new String[cursor.getCount()];
             int i = 0;
-
+            cursor.moveToFirst();
             do {
                 // Se obtienen los valores del renglon actual
-                ids [ i ] = cursor.getString(0);
+                ids [ i ] = String.valueOf(cursor.getInt(0));
                 materias [ i ] = cursor.getString(1);
-                portadas [ i ] = Integer.parseInt(cursor.getString(2));
+                portadas [ i ] = cursor.getInt(2);
                 i++;
             } while (cursor.moveToNext());
 
@@ -66,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Jalo", Toast.LENGTH_SHORT).show();
 
                     // Mandar id de la materia
-                    intent.putExtra ( "idMateria", ids [ i ] );
-                    intent.putExtra ( "nombreMateria", materias [ i ] );
+                    intent.putExtra( "idMateria", ids [ i ] );
                     startActivity(intent);
                 }
             });
