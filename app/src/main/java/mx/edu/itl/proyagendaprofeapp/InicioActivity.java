@@ -83,4 +83,12 @@ public class InicioActivity extends AppCompatActivity {
     public  void btnBorrar ( View v ) {
         baseDatosHelper.borrarBD();
     }
+
+    public void btnAcercaDe ( View v ) {
+        setContentView ( R.layout.acercade_layout );
+    }
+
+    public void btnVolverMain( View v ){
+        setContentView ( R.layout.activity_inicio );
+    }
 }

@@ -30,6 +30,7 @@ public class AlumnosActivity extends AppCompatActivity {
 
     String nombreTarea;
     int idMateria;
+    long idTarea;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         bdHelper = new BDHelper(this);
@@ -41,7 +42,7 @@ public class AlumnosActivity extends AppCompatActivity {
 
         nombreTarea = extras.getString("nombretarea");
         idMateria = extras.getInt("materia");
-        long idTarea = bdHelper.idTarea(nombreTarea, String.valueOf(idMateria));
+        idTarea= bdHelper.idTarea(nombreTarea, String.valueOf(idMateria));
 
 
         String [] alumnos = bdHelper.getAlumnosMateria(idMateria);
@@ -59,10 +60,10 @@ public class AlumnosActivity extends AppCompatActivity {
 
     public void btnElementosSeleccionadosClick ( View v ) {
         //SELECT alumnos_tabla.nombre, alumnos_tabla.No_control, alumnos_tareas_tabla.cumplio from alumnos_tareas_tabla, alumnos_tabla WHERE alumnos_tabla.ID = alumnos_tareas_tabla.ID_ALUMNO AND alumnos_tareas_tabla.ID_TAREA = 1
-        //seleccionados = new ArrayList<String>();
-        //SparseBooleanArray elementosMarcados = listaAlumnos.getCheckedItemPositions();
+        seleccionados = new ArrayList<String>();
+        SparseBooleanArray elementosMarcados = listaAlumnos.getCheckedItemPositions();
 
-        //bdHelper.updateTareaCumplida(1, elementosMarcados);
+        bdHelper.updateTareaCumplida(idTarea, elementosMarcados);
         generarReporte( v, bdHelper );
     }
 
@@ -84,7 +85,7 @@ public class AlumnosActivity extends AppCompatActivity {
             bw.write ( nombreTarea );
 
             // Escribir alumnos
-            String alumnos[] = db.getAlumnosTareas ( nombreTarea );
+            String alumnos[] = db.getAlumnosTareas ( idTarea );
 
             for ( int i = 0; i < alumnos.length; i++ )
                 bw.write ( alumnos [ i ] );

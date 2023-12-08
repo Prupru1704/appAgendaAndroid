@@ -507,27 +507,17 @@ public class BDHelper extends SQLiteOpenHelper {
 
         return idTarea;
     }
-    public String[] getAlumnosTareas ( String nombreTarea ) {
+    public String[] getAlumnosTareas ( long id_tarea ) {
         SQLiteDatabase db = this.getReadableDatabase();
-        // Otener id de la tarea por nombre
-        String queryID = "SELECT " + TAREAS_COL1 +
-                "FROM " + TAREAS_TABLE_NAME +
-                " WHERE " + TAREAS_COL2 + " = " + nombreTarea;
-
-        Cursor cursorTemp = db.rawQuery ( queryID, null );
-        int id_tarea = Integer.parseInt ( cursorTemp.getString ( 0 ) );
 
         // Construir raw query para alumnos
-        String query = "SELECT " +
-                ALUMNOS_COL3 + ", " +
-                ALUMNOS_COL2 + ", " +
-                ALUMNOSTAREAS_COL3 + " FROM " +
-                ALUMNOSTAREAS_TABLE_NAME +
-                " INNER JOIN " + ALUMNOS_TABLE_NAME +
-                " ON " + ALUMNOSTAREAS_TABLE_NAME + "." + ALUMNOSTAREAS_COL2 + " = " + ALUMNOS_TABLE_NAME + "." + ALUMNOS_COL1 +
-                " WHERE " + ALUMNOSTAREAS_COL2 + " = " + id_tarea;
+        String columnas[]={ALUMNOS_COL3,ALUMNOS_COL2,ALUMNOSTAREAS_COL3};
+        String tablas = ALUMNOS_TABLE_NAME + ","+ALUMNOSTAREAS_TABLE_NAME;
+        String select = ALUMNOSTAREAS_TABLE_NAME + "." + ALUMNOSTAREAS_COL1 + " = " + ALUMNOS_TABLE_NAME + "." + ALUMNOS_COL1 +
+                " AND " + ALUMNOSTAREAS_COL2 + " =? ";
+        String args[] ={ String.valueOf(id_tarea)};
 
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.query(tablas,columnas,select,args,null,null,ALUMNOS_COL2 + " DESC");
 
         // Verificar si el cursor contiene datos
         if (cursor != null && cursor.moveToFirst()) {
@@ -542,7 +532,7 @@ public class BDHelper extends SQLiteOpenHelper {
 
                 resultados [ i ] = alumno;
                 i++;
-            } while ( cursor.moveToFirst() );
+            } while ( cursor.moveToNext() );
 
             cursor.close();
             return  resultados;
