@@ -41,15 +41,5 @@
             app:icon="@drawable/agregar2"
             app:iconGravity="textEnd" />
 
-        <Button
-            android:id="@+id/IrAcercaDe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="#9C8449"
-            android:onClick="btnAcercaDe"
-            android:textSize="22sp"
-            app:icon="@drawable/informacion2"
-            app:iconGravity="textStart" />
     </LinearLayout>
 </LinearLayout>
