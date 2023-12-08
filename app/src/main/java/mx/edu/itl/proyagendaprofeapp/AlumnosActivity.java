@@ -28,7 +28,8 @@ public class AlumnosActivity extends AppCompatActivity {
     private ListView listaAlumnos;
     private BDHelper bdHelper;
 
-    String nombreMateria, nombreTarea;
+    String nombreTarea;
+    int idMateria;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         bdHelper = new BDHelper(this);
@@ -36,18 +37,21 @@ public class AlumnosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alumnos);
 
         // Traer argumentos enviados
-        Intent intent = getIntent();
-        nombreMateria = String.valueOf(intent.getIntExtra ( "nombreMateria", -1 ));
-        nombreTarea = String.valueOf(intent.putExtra ( "nombreTarea", -1 ));
+        Bundle extras = getIntent().getExtras();
 
-        String [] alumnos = bdHelper.getAlumnosMateria(bdHelper.IdMateriaPorNombre(nombreMateria));
+        nombreTarea = extras.getString("nombretarea");
+        idMateria = extras.getInt("materia");
+        long idTarea = bdHelper.idTarea(nombreTarea, String.valueOf(idMateria));
+
+
+        String [] alumnos = bdHelper.getAlumnosMateria(idMateria);
 
         listaAlumnos = findViewById(R.id.listaAlumnos);
         ArrayAdapter adaptador = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice
                 , alumnos);
         listaAlumnos.setAdapter(adaptador);
 
-        Boolean checked[]= bdHelper.getAlumnosTareaCumplio(1);
+        Boolean checked[]= bdHelper.getAlumnosTareaCumplio(idTarea);
         for(int i = 0; i < alumnos.length;i++){
                 listaAlumnos.setItemChecked(i,checked[i]);
         }

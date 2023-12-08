@@ -18,20 +18,18 @@ public class TareasActivity extends AppCompatActivity {
 
     private BDHelper bdHelper;
 
-    private int idTarea;
+
+    private int idMateria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bdHelper = new BDHelper(this);
         setContentView(R.layout.activity_tareas);
-
+        String idMateria1 = getIntent().getStringExtra("idMateria");
+        idMateria = Integer.parseInt(idMateria1);
         // Obtener intent y sacar nombre de la materia
-        Intent intent = getIntent();
-        String nombreMateria = String.valueOf(intent.getIntExtra ( "nombreMateria", -1 ));
-        idTarea = intent.getIntExtra ( "idMateria", -1 );
-
-        String [] tareas = bdHelper.getTareasMateria(bdHelper.IdMateriaPorNombre(nombreMateria));
+        String [] tareas = bdHelper.getTareasMateria(idMateria);
 
         listaTareas   = findViewById(R.id.listaTareas);
         // Se crea un ArrayAdapter: El 2o argumento debe ser el id de un recurso TEXTVIEW
@@ -52,8 +50,11 @@ public class TareasActivity extends AppCompatActivity {
 
                 // Mandar el nombre de la tarea
                 Intent intent = new Intent(TareasActivity.this, AlumnosActivity.class);
-                intent.putExtra ( "nombreTarea", tareas [ i ] );
-                intent.putExtra ( "nombreMateria", nombreMateria );
+                Bundle extras = new Bundle();
+
+                extras.putInt ("materia",idMateria);
+                extras.putString ( "nombretarea", tareas[i] );
+                intent.putExtras(extras);
                 startActivity(intent);
             }});
     };
