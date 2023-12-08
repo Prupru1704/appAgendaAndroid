@@ -36,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="#9C8449"
-            android:onClick="btnAgregar"
             android:text="Agregar"
             android:textSize="20sp"
             app:icon="@drawable/agregar2"
