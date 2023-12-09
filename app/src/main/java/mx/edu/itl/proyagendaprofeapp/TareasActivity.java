@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,15 +13,25 @@ import android.widget.Toast;
 
 public class TareasActivity extends AppCompatActivity {
 
-    private final String [] tareas   = {"android tarea 1", "android tarea 2" };
+
     private ListView listaTareas;
 
+    private BDHelper bdHelper;
+
+    private int idTarea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bdHelper = new BDHelper(this);
         setContentView(R.layout.activity_tareas);
 
+        // Obtener intent y sacar nombre de la materia
+        Intent intent = getIntent();
+        String nombreMateria = String.valueOf(intent.getIntExtra ( "nombreMateria", -1 ));
+        idTarea = intent.getIntExtra ( "idMateria", -1 );
+
+        String [] tareas = bdHelper.getTareasMateria(bdHelper.IdMateriaPorNombre(nombreMateria));
 
         listaTareas   = findViewById(R.id.listaTareas);
         // Se crea un ArrayAdapter: El 2o argumento debe ser el id de un recurso TEXTVIEW
@@ -33,12 +44,17 @@ public class TareasActivity extends AppCompatActivity {
         listaTareas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //bdHelper.insertarAlumno("David","Android");
+                //bdHelper.insertarAlumno("Carlos","Android");
+                //bdHelper.insertarAlumno("Eduardo","Android");
+                //bdHelper.insertarTarea("appBanderas","Android");
+                //bdHelper.insertarTarea("appFotos","Android");
+
+                // Mandar el nombre de la tarea
                 Intent intent = new Intent(TareasActivity.this, AlumnosActivity.class);
-
-                Toast.makeText(TareasActivity.this,"Jalo",Toast.LENGTH_SHORT );
-
+                intent.putExtra ( "nombreTarea", tareas [ i ] );
+                intent.putExtra ( "nombreMateria", nombreMateria );
                 startActivity(intent);
-
             }});
     };
 

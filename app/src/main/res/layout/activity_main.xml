@@ -37,7 +37,7 @@
             android:layout_weight="1"
             android:backgroundTint="#9C8449"
             android:text="Agregar"
-            android:textSize="22sp"
+            android:textSize="20sp"
             app:icon="@drawable/agregar2"
             app:iconGravity="textEnd" />
 
