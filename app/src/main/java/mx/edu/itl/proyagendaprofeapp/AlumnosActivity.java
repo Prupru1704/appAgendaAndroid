@@ -82,13 +82,13 @@ public class AlumnosActivity extends AppCompatActivity {
         try {
             BufferedWriter bw = new BufferedWriter ( new FileWriter( archivo ) );
 
-            bw.write ( nombreTarea );
+            bw.write ( nombreTarea + "\n" );
 
             // Escribir alumnos
             String alumnos[] = db.getAlumnosTareas ( idTarea );
 
             for ( int i = 0; i < alumnos.length; i++ )
-                bw.write ( alumnos [ i ] );
+                bw.write ( alumnos [ i ] + "\n" );
 
             bw.close();
 
