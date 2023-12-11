@@ -20,5 +20,26 @@
     <ListView
         android:id="@+id/listaTareas"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="635dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#9C8449"
+            android:onClick="btnImportarTareas"
+            android:text="Importar TXT"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:icon="@drawable/agregar2"
+            app:iconGravity="textEnd"
+            app:iconTint="#FFFFFF" />
+
+    </LinearLayout>
 </LinearLayout>

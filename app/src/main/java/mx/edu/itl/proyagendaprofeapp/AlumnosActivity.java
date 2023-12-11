@@ -1,9 +1,12 @@
 package mx.edu.itl.proyagendaprofeapp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.SparseBooleanArray;
@@ -12,10 +15,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,8 +34,13 @@ public class AlumnosActivity extends AppCompatActivity {
     private BDHelper bdHelper;
 
     String nombreTarea;
+
     int idMateria;
+
     long idTarea;
+
+    public static final int CODIGO_SELECCIONAR_ARCHIVO = 2908;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         bdHelper = new BDHelper(this);
@@ -82,9 +92,9 @@ public class AlumnosActivity extends AppCompatActivity {
         try {
             BufferedWriter bw = new BufferedWriter ( new FileWriter( archivo ) );
 
-            bw.write ( nombreTarea + "\n" );
+            bw.write ( nombreTarea + "\n\n" );
 
-            // Escribir alumnos
+            // Obtener alumnos
             String alumnos[] = db.getAlumnosTareas ( idTarea );
 
             for ( int i = 0; i < alumnos.length; i++ )
@@ -98,4 +108,61 @@ public class AlumnosActivity extends AppCompatActivity {
         }
     }
 
+    public void btnImportarAlumnos ( View v ) {
+        // Intent para llamar al explorador de archivos
+        Intent intent = new Intent ( Intent.ACTION_GET_CONTENT );
+        intent.setType ( "*/*" ); // Se admiten todos los archivos
+        intent.addCategory ( Intent.CATEGORY_DEFAULT );
+
+        try {
+            startActivityForResult ( Intent.createChooser ( intent, "Seleccione una opción" ),
+                    CODIGO_SELECCIONAR_ARCHIVO);
+        } catch ( ActivityNotFoundException e ) {
+            Toast.makeText(this, "Explorador de archivos no encontrado.\n" +
+                    "Por favor instale un exploador de archivos.", Toast.LENGTH_LONG).show();
+        }
+
+        // ------------------ CONTINUA EN onActivityResult() ------------------ //
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        File archivo;
+        if ( requestCode == CODIGO_SELECCIONAR_ARCHIVO ) {
+            if ( resultCode == RESULT_OK ) {
+                Uri archivoUri = data.getData();
+
+
+                archivo = new File ( archivoUri.getPath() );
+                // Leer archivo
+                try {
+                    BufferedReader br = new BufferedReader ( new InputStreamReader( getContentResolver().openInputStream ( archivoUri ) ));
+
+                    // Guadar lineas leidas
+                    ArrayList < String > lineasLeidas = new ArrayList<>();
+                    String linea;
+                    while ( ( linea = br.readLine() ) != null  ) {
+                        // Puede haber mas de un renglon que contenga materias
+                        lineasLeidas.add ( linea );
+                    }
+
+                    if ( lineasLeidas.size() > 0 ) {
+                        // Separar valores por las comas
+                        for ( int i = 0; i < lineasLeidas.size(); i++ ) {
+                            String alumnos[] = lineasLeidas.get ( i ).split(",");
+
+                            // alumnos[0] = no control
+                            // alumnos[1] = nombre
+                            Toast.makeText ( this, alumnos [0] + "," + alumnos[1] , Toast.LENGTH_LONG ).show();
+                        }
+                    }
+
+                    br.close();
+                } catch ( IOException ex) {
+                    Toast.makeText ( this, "ERROR: " + ex, Toast.LENGTH_LONG ).show();
+                }
+            }
+        }
+    }
 }

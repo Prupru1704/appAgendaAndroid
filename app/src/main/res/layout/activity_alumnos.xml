@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="#FFEAEA"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".TareasActivity">
 
@@ -20,20 +20,44 @@
     <ListView
         android:id="@+id/listaAlumnos"
         android:layout_width="match_parent"
-        android:layout_height="614dp"
+        android:layout_height="635dp"
         android:choiceMode="multipleChoice"
         android:foregroundTint="#9C8449">
 
     </ListView>
 
-    <Button
-        android:id="@+id/Confirmar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="66dp"
-        android:backgroundTint="#9C8449"
-        android:onClick="btnElementosSeleccionadosClick"
-        android:text="Confirmar"
-        android:textSize="22sp"
-        app:icon="@drawable/confirmacion2"
-        app:iconGravity="textEnd" />
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/Confirmar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#9C8449"
+            android:onClick="btnElementosSeleccionadosClick"
+            android:text="Confirmar"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:icon="@drawable/confirmacion2"
+            app:iconGravity="textEnd"
+            app:iconTint="#FFFFFF" />
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#9C8449"
+            android:onClick="btnImportarAlumnos"
+            android:text="Importar TXT"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            app:icon="@drawable/agregar2"
+            app:iconGravity="textEnd"
+            app:iconTint="#FFFFFF" />
+
+    </LinearLayout>
+
 </LinearLayout>

@@ -9,52 +9,41 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="409dp"
+        android:layout_width="wrap_content"
         android:layout_height="436dp"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.589">
+        app:layout_constraintVertical_bias="0.559">
 
         <Button
             android:id="@+id/irAcercaDe"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:backgroundTint="#9C8449"
             android:onClick="btnAcercaDe"
-            android:textSize="22sp"
-            app:icon="@drawable/informacion2"
-            app:iconGravity="textStart"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button3"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <Button
-            android:id="@+id/button"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
-            android:backgroundTint="#9C8449"
-            android:onClick="btnAgregar"
-            android:text="Agregar Datos"
+            android:text="Acerca De"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
-            app:layout_constraintBottom_toTopOf="@+id/button2"
+            app:icon="@drawable/informacion2"
+            app:iconGravity="textEnd"
+            app:iconTint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/button3"
+            app:layout_constraintVertical_bias="0.186" />
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="250dp"
+            android:layout_width="300dp"
             android:layout_height="50dp"
             android:backgroundTint="#9C8449"
             android:onClick="btnIrLista"
@@ -63,22 +52,44 @@
             android:textSize="22sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15" />
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="250dp"
+            android:layout_width="300dp"
             android:layout_height="50dp"
+            android:layout_marginTop="36dp"
             android:backgroundTint="#9C8449"
             android:onClick="btnBorrar"
             android:text="Eliminar Todo"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#9C8449"
+            android:onClick="btnFormato"
+            android:text="Formatos"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp"
+            app:icon="@drawable/informacion2"
+            app:iconGravity="textEnd"
+            app:iconTint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/irAcercaDe"
+            app:layout_constraintVertical_bias="0.33" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -92,4 +103,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

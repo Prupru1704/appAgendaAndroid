@@ -188,6 +188,7 @@
         android:backgroundTint="#9C8449"
         android:onClick="btnVolverMain"
         android:text="Atras"
+        android:textColor="#FFFFFF"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

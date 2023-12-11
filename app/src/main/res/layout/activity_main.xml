@@ -20,7 +20,7 @@
     <ListView
         android:id="@+id/listaMaterias"
         android:layout_width="match_parent"
-        android:layout_height="635dp">
+        android:layout_height="630dp">
 
     </ListView>
 
@@ -32,14 +32,17 @@
 
         <Button
             android:id="@+id/btnAgregar"
-            android:layout_width="112dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="#9C8449"
-            android:text="Agregar"
+            android:onClick="btnImportarMaterias"
+            android:text="Importar TXT"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
             app:icon="@drawable/agregar2"
-            app:iconGravity="textEnd" />
+            app:iconGravity="textEnd"
+            app:iconTint="#FFFFFF" />
 
     </LinearLayout>
 </LinearLayout>

@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     android:padding="10sp">
 
-    <ImageView
-        android:id="@+id/imgvMateria"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_weight="1"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <TextView
         android:id="@+id/txtMateria"
         android:layout_width="wrap_content"
@@ -23,5 +16,5 @@
         android:text="Materia"
         android:textAlignment="center"
         android:textColor="#9C8449"
-        android:textSize="18sp" />
+        android:textSize="28sp" />
 </LinearLayout>

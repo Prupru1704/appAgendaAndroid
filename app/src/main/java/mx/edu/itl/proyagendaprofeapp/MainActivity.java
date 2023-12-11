@@ -2,11 +2,15 @@ package mx.edu.itl.proyagendaprofeapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +23,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+    public static final int CODIGO_SELECCIONAR_ARCHIVO = 2908;
     private ListView lstvMaterias;
 
     BDHelper baseDatosHelper ;
@@ -64,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Intent intent = new Intent(MainActivity.this, TareasActivity.class);
 
-                    Toast.makeText(MainActivity.this, "Jalo", Toast.LENGTH_SHORT).show();
-
                     // Mandar id de la materia
                     intent.putExtra( "idMateria", ids [ i ] );
                     startActivity(intent);
@@ -74,6 +86,65 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    public void btnImportarMaterias ( View v ) {
+        // Intent para llamar al explorador de archivos
+        Intent intent = new Intent ( Intent.ACTION_GET_CONTENT );
+        intent.setType ( "*/*" ); // Se admiten todos los archivos
+        intent.addCategory ( Intent.CATEGORY_DEFAULT );
+
+        try {
+            startActivityForResult ( Intent.createChooser ( intent, "Seleccione una opción" ),
+                    CODIGO_SELECCIONAR_ARCHIVO);
+        } catch ( ActivityNotFoundException e ) {
+            Toast.makeText(this, "Explorador de archivos no encontrado.\n" +
+                    "Por favor instale un exploador de archivos.", Toast.LENGTH_LONG).show();
+        }
+
+        // ------------------ CONTINUA EN onActivityResult() ------------------ //
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        File archivo;
+        if ( requestCode == CODIGO_SELECCIONAR_ARCHIVO ) {
+            if ( resultCode == RESULT_OK ) {
+                Uri archivoUri = data.getData();
+
+
+                archivo = new File ( archivoUri.getPath() );
+                // Leer archivo
+                try {
+                    BufferedReader br = new BufferedReader ( new InputStreamReader ( getContentResolver().openInputStream ( archivoUri ) ));
+
+                    // Guadar lineas leidas
+                    ArrayList < String > lineasLeidas = new ArrayList<>();
+                    String linea;
+                    while ( ( linea = br.readLine() ) != null  ) {
+                        // Puede haber mas de un renglon que contenga materias
+                        lineasLeidas.add ( linea );
+                    }
+
+                    if ( lineasLeidas.size() > 0 ) {
+                        // Separar valores por las comas (puede haber mas de una linea en el txt)
+                        for ( int i = 0; i < lineasLeidas.size(); i++ ) {
+                            String materias[] = lineasLeidas.get ( i ).split(",");
+
+                            for (int j = 0; j < materias.length; j++) {
+                                // Insertar materias
+                                Toast.makeText(this, materias[j], Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    br.close();
+                } catch ( IOException ex) {
+                    Toast.makeText ( this, "ERROR: " + ex, Toast.LENGTH_LONG ).show();
+                }
+            }
+        }
+    }
 
     ///---------------------------------------------------------------------------------------------
     class AdaptadorMateria extends ArrayAdapter {
@@ -99,11 +170,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Obteniendo las referenacias del layout del renglon
-            ImageView portada = convertView.findViewById ( R.id.imgvMateria );
+            //ImageView portada = convertView.findViewById ( R.id.imgvMateria );
             TextView titulo = convertView.findViewById ( R.id.txtMateria );
 
             // Sobreescribir valores
-            portada.setImageResource ( portadas[ position ] );
+            //portada.setImageResource ( portadas[ position ] );
             titulo.setText ( materias [ position ] );
 
             return convertView;
