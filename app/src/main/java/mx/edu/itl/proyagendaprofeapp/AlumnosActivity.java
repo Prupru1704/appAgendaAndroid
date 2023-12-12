@@ -44,29 +44,29 @@ public class AlumnosActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        bdHelper = new BDHelper(this);
+        bdHelper = new BDHelper ( this );
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alumnos);
 
         // Traer argumentos enviados
         Bundle extras = getIntent().getExtras();
 
-        nombreTarea = extras.getString("nombretarea");
-        nombreMateria = extras.getString("nombreMateria");
-        idMateria = extras.getInt("materia");
-        idTarea= bdHelper.idTarea(nombreTarea, String.valueOf(idMateria));
+        nombreTarea = extras.getString ( "nombretarea" );
+        nombreMateria = extras.getString ( "nombreMateria" );
+        idMateria = extras.getInt ( "materia" );
+        idTarea = bdHelper.idTarea ( nombreTarea, String.valueOf ( idMateria ) );
 
 
-        String [] alumnos = bdHelper.getAlumnosMateria(idMateria);
+        String [] alumnos = bdHelper.getAlumnosMateria ( idMateria );
 
-        listaAlumnos = findViewById(R.id.listaAlumnos);
-        ArrayAdapter adaptador = new ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice
-                , alumnos);
-        listaAlumnos.setAdapter(adaptador);
+        listaAlumnos = findViewById ( R.id.listaAlumnos );
+        ArrayAdapter adaptador = new ArrayAdapter ( this, android.R.layout.simple_list_item_multiple_choice
+                , alumnos );
+        listaAlumnos.setAdapter ( adaptador );
 
-        Boolean checked[]= bdHelper.getAlumnosTareaCumplio(idTarea);
+        Boolean checked[]= bdHelper.getAlumnosTareaCumplio ( idTarea );
         for(int i = 0; i < alumnos.length;i++){
-                listaAlumnos.setItemChecked(i,checked[i]);
+            listaAlumnos.setItemChecked ( i,checked [ i ] );
         }
     }
 
@@ -154,14 +154,14 @@ public class AlumnosActivity extends AppCompatActivity {
                     if ( lineasLeidas.size() > 0 ) {
                         // Separar valores por las comas
                         for ( int i = 0; i < lineasLeidas.size(); i++ ) {
-                            String alumnos[] = lineasLeidas.get ( i ).split(",");
+                            String alumnos[] = lineasLeidas.get ( i ).split ( "," );
 
                             // alumnos[0] = no control
                             // alumnos[1] = nombre
-                            bdHelper.insertarAlumno(alumnos[0],alumnos[1]);
-                            bdHelper.AsignarAlumnoMateria(alumnos[1],nombreMateria);
-                            bdHelper.asignarTareas(String.valueOf(idMateria),String.valueOf(bdHelper.IdAlumnoPorNombre(alumnos[1])));
-                            Toast.makeText ( this, alumnos [0] + "," + alumnos[1] , Toast.LENGTH_LONG ).show();
+                            bdHelper.insertarAlumno ( alumnos [ 0 ], alumnos [ 1 ] );
+                            bdHelper.AsignarAlumnoMateria ( alumnos [ 1 ], nombreMateria );
+                            bdHelper.asignarTareas ( String.valueOf ( idMateria ), String.valueOf ( bdHelper.IdAlumnoPorNombre ( alumnos [ 1 ] ) ) );
+                            Toast.makeText ( this, alumnos [ 0 ] + "," + alumnos [ 1 ] , Toast.LENGTH_LONG ).show();
                             finish();
                         }
                     }

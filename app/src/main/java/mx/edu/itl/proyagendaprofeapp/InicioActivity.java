@@ -46,8 +46,25 @@ public class InicioActivity extends AppCompatActivity {
     }
 
     public  void btnBorrar ( View v ) {
-        baseDatosHelper.borrarBD();
-        Toast.makeText( this, "Datos eliminados, inserte nuevos", Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder ( this );
+        builder.setTitle ( "Eliminar Base de Datos" )
+        .setMessage ( "¿Está seguro de eliminar todos los datos referente a materias, tareas y alumnos?" )
+        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                baseDatosHelper.borrarBD();
+                Toast.makeText( InicioActivity.this, "Datos eliminados, inserte nuevos", Toast.LENGTH_SHORT).show();
+            }
+        })
+        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        })
+        .setCancelable ( false )
+        .create()
+        .show();
     }
 
     public void btnAcercaDe ( View v ) {

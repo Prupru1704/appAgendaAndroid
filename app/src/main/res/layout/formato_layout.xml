@@ -98,7 +98,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="42dp"
-        android:text="Ej. appEjemploSQLite, appProyectoU5"
+        android:text="Ej. AppEjemploSQLite,AppProyectoU5"
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/textView23"
         app:layout_constraintEnd_toEndOf="parent"
