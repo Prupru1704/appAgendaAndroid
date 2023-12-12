@@ -3,20 +3,33 @@ package mx.edu.itl.proyagendaprofeapp;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
+import mx.edu.itl.proyagendaprofeapp.util.ChecadorDePermisos;
+import mx.edu.itl.proyagendaprofeapp.util.PermisoApp;
 
 public class InicioActivity extends AppCompatActivity {
     BDHelper baseDatosHelper;
+
+    // Permisos
+    // Arreglo de permisos
+    private PermisoApp permisos [] = new PermisoApp[] {
+            new PermisoApp( Manifest.permission.WRITE_EXTERNAL_STORAGE, "Almacenamiento", true ),
+            new PermisoApp( Manifest.permission.READ_EXTERNAL_STORAGE, "Almacenamiento", true ),
+            new PermisoApp( Manifest.permission.MANAGE_EXTERNAL_STORAGE, "Almacenamiento", true )
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicio);
 
         baseDatosHelper = new BDHelper ( this );
+        ChecadorDePermisos.checarPermisos ( this, permisos );
 /*
         baseDatosHelper.insertarMaterias ( "Desarrollo en Android", R.drawable.android );
         baseDatosHelper.insertarAlumno ( "19130905", "José Eduardo Espino" );
