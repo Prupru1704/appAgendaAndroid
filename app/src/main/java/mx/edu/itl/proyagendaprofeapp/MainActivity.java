@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // Mandar id de la materia
                     intent.putExtra( "idMateria", ids [ i ] );
+                    intent.putExtra("nombre",materias[i]);
                     startActivity(intent);
                 }
             });
@@ -133,7 +134,9 @@ public class MainActivity extends AppCompatActivity {
 
                             for (int j = 0; j < materias.length; j++) {
                                 // Insertar materias
+                                baseDatosHelper.insertarMaterias(materias[j]);
                                 Toast.makeText(this, materias[j], Toast.LENGTH_SHORT).show();
+                                finish();
                             }
                         }
                     }

@@ -34,6 +34,7 @@ public class AlumnosActivity extends AppCompatActivity {
     private BDHelper bdHelper;
 
     String nombreTarea;
+    String nombreMateria;
 
     int idMateria;
 
@@ -51,6 +52,7 @@ public class AlumnosActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         nombreTarea = extras.getString("nombretarea");
+        nombreMateria = extras.getString("nombreMateria");
         idMateria = extras.getInt("materia");
         idTarea= bdHelper.idTarea(nombreTarea, String.valueOf(idMateria));
 
@@ -86,12 +88,14 @@ public class AlumnosActivity extends AppCompatActivity {
         String fechaHora = simpleDateFormat.format( new Date() );
         String nombreArchivo = "reporte - " + fechaHora + ".txt";
 
+
         File archivo = new File( rutaArchivo, nombreArchivo );
 
         // Escribir sobre el archivo
         try {
             BufferedWriter bw = new BufferedWriter ( new FileWriter( archivo ) );
 
+            bw.write ( nombreMateria + "\n\n" );
             bw.write ( nombreTarea + "\n\n" );
 
             // Obtener alumnos
@@ -154,7 +158,11 @@ public class AlumnosActivity extends AppCompatActivity {
 
                             // alumnos[0] = no control
                             // alumnos[1] = nombre
+                            bdHelper.insertarAlumno(alumnos[0],alumnos[1]);
+                            bdHelper.AsignarAlumnoMateria(alumnos[1],nombreMateria);
+                            bdHelper.asignarTareas(String.valueOf(idMateria),String.valueOf(bdHelper.IdAlumnoPorNombre(alumnos[1])));
                             Toast.makeText ( this, alumnos [0] + "," + alumnos[1] , Toast.LENGTH_LONG ).show();
+                            finish();
                         }
                     }
 

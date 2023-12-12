@@ -113,12 +113,11 @@ public class BDHelper extends SQLiteOpenHelper {
         db.execSQL ( crearAluTarTabla );
     }
 
-    public void insertarMaterias ( String materia, int materiaImg ) {
+    public void insertarMaterias ( String materia) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
         contentValues.put ( MATERIAS_COL2, materia );
-        contentValues.put ( MATERIAS_COL3, materiaImg );
 
 
         Log.d(TAG, "addDatos: Agregando " + materia + " a " + MATERIAS_TABLE_NAME);
@@ -211,7 +210,7 @@ public class BDHelper extends SQLiteOpenHelper {
         String args[] = {ID_alumno};
 
         // Consulta
-        Cursor cursor = db.query ( ALUMNOS_TABLE_NAME, columnas, selccion, args, null, null, ALUMNOS_COL2 +" DESC" );
+        Cursor cursor = db.query ( ALUMNOS_TABLE_NAME, columnas, selccion, args, null, null, ALUMNOS_COL2 +" ASC" );
 
         // Verificar si se realizo correctamente la consulta
         String nombreNoControl = "";
@@ -269,7 +268,6 @@ public class BDHelper extends SQLiteOpenHelper {
         long idTarea = db.insert ( TAREAS_TABLE_NAME, null, tareaValues );
 
         // Registrar tarea para todos los alumnos
-        asignarTarea ( db, idTarea);
 
         // Verificar si se realizó la consulta
         if ( idTarea != -1 ) {
@@ -278,23 +276,25 @@ public class BDHelper extends SQLiteOpenHelper {
             Log.e ( TAG, "No se registró la tarea" );
         }
     }
-    public void asignarTarea (SQLiteDatabase db , long tarea_pk ) {
+    public void asignarTareas ( String id_materia, String id_alumno ) {
         // Reliza el procedimiento de asignar la tarea registrada a todos los alumnos registrado
         // Columna deseada
-        String columnas[] = { ALUMNOS_COL1 };
-
-        Cursor cursor = db.query ( ALUMNOS_TABLE_NAME, columnas,
-                null, null, null, null, null );
+        SQLiteDatabase db = getWritableDatabase();
+        String columnas[] = { TAREAS_COL1};
+        String selec = TAREAS_COL3 + "=?";
+        String args[] ={id_materia};
+        Cursor cursor = db.query ( TAREAS_TABLE_NAME, columnas,
+                selec, args, null, null, null );
 
         // Si se encontraron alumnos
         if ( cursor != null && cursor.moveToFirst() ) {
             do {
                 // Alumno actual (obtener id)
-                int colIndex = cursor.getColumnIndex ( ALUMNOS_COL1 );
-                long idAlumno = cursor.getLong ( colIndex );
+                int colIndex = cursor.getColumnIndex ( TAREAS_COL1 );
+                long tarea_pk = cursor.getLong ( colIndex );
 
                 ContentValues tarea_alumno = new ContentValues();
-                tarea_alumno.put ( ALUMNOSTAREAS_COL1, idAlumno );
+                tarea_alumno.put ( ALUMNOSTAREAS_COL1, id_alumno );
                 tarea_alumno.put ( ALUMNOSTAREAS_COL2, tarea_pk );
                 tarea_alumno.put( ALUMNOSTAREAS_COL3,0);
 
@@ -313,7 +313,7 @@ public class BDHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String columnas[] = { MATERIAS_COL1,MATERIAS_COL2 , MATERIAS_COL3};
-        String orden = MATERIAS_COL2 + " DESC";
+        String orden = MATERIAS_COL2 + " ASC";
         Cursor data = db.query (MATERIAS_TABLE_NAME, columnas,null,null,null,null, orden);
         return data;
     }
@@ -335,7 +335,7 @@ public class BDHelper extends SQLiteOpenHelper {
 
         String tablas = ALUMNOSMATERIAS_TABLE_NAME + "," + ALUMNOS_TABLE_NAME;
         // Consulta
-        Cursor cursor = db.query (tablas , columnas, selccion, args, null, null,ALUMNOS_COL2 + " DESC" );
+        Cursor cursor = db.query (tablas , columnas, selccion, args, null, null,ALUMNOS_COL2 + " ASC" );
 
         String[] result = new String[cursor.getCount()];
         cursor.moveToFirst();
@@ -361,7 +361,7 @@ public class BDHelper extends SQLiteOpenHelper {
         String args[] = { id_materia + "" };
 
         // Consulta
-        Cursor cursor = db.query ( TAREAS_TABLE_NAME, columnas, selccion, args, null, null, null );
+        Cursor cursor = db.query ( TAREAS_TABLE_NAME, columnas, selccion, args, null, null, TAREAS_COL2 +" ASC  "  );
 
         String[] result = new String[cursor.getCount()];
         cursor.moveToFirst();
@@ -393,7 +393,7 @@ public class BDHelper extends SQLiteOpenHelper {
                 columnas,
                 selccion,
                 args,
-                null, null, ALUMNOS_COL2 + " DESC" );
+                null, null, ALUMNOS_COL2 + " ASC" );
 
         // Agrupar id's
         Boolean cumplio[]= new Boolean[cursor.getCount()];
@@ -439,7 +439,7 @@ public class BDHelper extends SQLiteOpenHelper {
                 columnas,
                 selccion,
                 args,
-                null, null, ALUMNOS_COL2 + " DESC" );
+                null, null, ALUMNOS_COL2 + " ASC" );
 
         // Agrupar id's
         int cumplioIDS[]= new int[cursor1.getCount()];
@@ -517,7 +517,7 @@ public class BDHelper extends SQLiteOpenHelper {
                 " AND " + ALUMNOSTAREAS_COL2 + " =? ";
         String args[] ={ String.valueOf(id_tarea)};
 
-        Cursor cursor = db.query(tablas,columnas,select,args,null,null,ALUMNOS_COL2 + " DESC");
+        Cursor cursor = db.query(tablas,columnas,select,args,null,null,ALUMNOS_COL2 + " ASC");
 
         // Verificar si el cursor contiene datos
         if (cursor != null && cursor.moveToFirst()) {

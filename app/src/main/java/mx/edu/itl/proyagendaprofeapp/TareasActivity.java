@@ -31,6 +31,7 @@ public class TareasActivity extends AppCompatActivity {
 
     private int idMateria;
 
+    private String nombreMateria;
     public static final int CODIGO_SELECCIONAR_ARCHIVO = 2908;
 
     @Override
@@ -41,6 +42,7 @@ public class TareasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tareas);
 
         String idMateria1 = getIntent().getStringExtra ( "idMateria" );
+        nombreMateria = getIntent().getStringExtra("nombre");
         idMateria = Integer.parseInt ( idMateria1 );
 
         // Obtener intent y sacar nombre de la materia
@@ -67,6 +69,7 @@ public class TareasActivity extends AppCompatActivity {
                 Bundle extras = new Bundle();
 
                 extras.putInt ("materia",idMateria);
+                extras.putString("nombreMateria",nombreMateria);
                 extras.putString ( "nombretarea", tareas[i] );
                 intent.putExtras ( extras );
                 startActivity ( intent );
@@ -120,7 +123,9 @@ public class TareasActivity extends AppCompatActivity {
 
                             for (int j = 0; j < tareas.length; j++) {
                                 // Insertar tareas
+                                bdHelper.insertarTarea(tareas[j],nombreMateria);
                                 Toast.makeText(this, tareas[j], Toast.LENGTH_SHORT).show();
+                                finish();
                             }
                         }
                     }

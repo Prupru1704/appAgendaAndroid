@@ -41,7 +41,7 @@ public class InicioActivity extends AppCompatActivity {
     }
 
     public  void btnIrLista ( View v ) {
-        Intent intent = new Intent( InicioActivity.this, MainActivity.class );
+        Intent intent = new Intent(  InicioActivity.this, MainActivity.class );
         startActivity ( intent );
     }
 
