@@ -12,7 +12,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="MATERIAS"
+        android:text="@string/Materias"
         android:textAlignment="center"
         android:textColor="#9C8449"
         android:textSize="34sp" />
@@ -37,7 +37,7 @@
             android:layout_weight="1"
             android:backgroundTint="#9C8449"
             android:onClick="btnImportarMaterias"
-            android:text="Importar TXT"
+            android:text="@string/btnImportarTxt"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             app:icon="@drawable/agregar2"

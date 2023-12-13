@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF"
-    tools:context="">
+    tools:context=".InicioActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -33,14 +33,14 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Acerca de ..."
+            android:text="@string/btnAcercaDe"
             android:textSize="34sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.39999998" />
+            app:layout_constraintVertical_bias="0.408" />
 
         <TextView
             android:id="@+id/textView5"
@@ -183,11 +183,11 @@
 
     <Button
         android:id="@+id/btnVolverMain"
-        android:layout_width="172dp"
-        android:layout_height="45dp"
+        android:layout_width="176dp"
+        android:layout_height="69dp"
         android:backgroundTint="#9C8449"
         android:onClick="btnVolverMain"
-        android:text="Atras"
+        android:text="@string/btnRegresar"
         android:textColor="#FFFFFF"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"

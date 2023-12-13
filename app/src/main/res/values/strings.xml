@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">proyAgendaProfeApp</string>
+    <string name="app_name" translatable="false">proyAgendaProfeApp</string>
+    <string name="label_Bienvenido">Bienvenido</string>
+    <string name="btnIrMaterias">Ir a Lista de Materias</string>
+    <string name="btnAcercaDe">Acerca De</string>
+    <string name="btnFormatos">Formatos</string>
+    <string name="btnRegresar">Regresar</string>
+    <string name="lblTitForm">Como Agregar datos a la App?</string>
+    <string name="Materias">Materias</string>
+    <string name="Tareas">Tareas</string>
+    <string name="Alumnos">Alumnos</string>
+    <string name="lblTitElim">Borrar Base de Datos</string>
+    <string name="lblTxtElim">Esta seguro de que quiere borrar tod?</string>
+    <string name="si">Si</string>
+    <string name="no">No</string>
+    <string name="btnImportarTxt">Importar txt</string>
+    <string name="btnConfirmar">Confirmar</string>
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_Bienvenido">Welcome</string>
+    <string name="btnIrMaterias">Go to Assignments List</string>
+    <string name="btnAcercaDe">About Us</string>
+    <string name="btnFormatos">Formats</string>
+    <string name="btnRegresar">Back</string>
+    <string name="lblTitForm">How to add Data to the App?</string>
+    <string name="Materias">Assignments</string>
+    <string name="Tareas">Homeworks</string>
+    <string name="Alumnos">Students</string>
+    <string name="lblTitElim">Delete Data Base</string>
+    <string name="lblTxtElim">Are you sure you wanna delete everything?</string>
+    <string name="si">Yes</string>
+    <string name="no">No</string>
+    <string name="btnImportarTxt">Import Text File</string>
+    <string name="btnConfirmar">Confirm</string>
+</resources>
