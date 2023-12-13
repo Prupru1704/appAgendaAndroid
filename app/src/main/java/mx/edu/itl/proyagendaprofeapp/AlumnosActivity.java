@@ -1,3 +1,40 @@
+/*------------------------------------------------------------------------------------------
+:*                         TECNOLOGICO NACIONAL DE MEXICO
+:*                                CAMPUS LA LAGUNA
+:*                     INGENIERIA EN SISTEMAS COMPUTACIONALES
+:*                             DESARROLLO EN ANDROID "A"
+:*
+:*                   SEMESTRE: AGO-DIC/2023    HORA: 08-09 HRS
+:*
+:*            Activity que muestra la lista de alumnos con tarea realizada
+:*
+:*  Archivo     : AlumnosActivity.java
+:*  Autor       : David Alejandro Pruneda Meraz     19130960
+:*                Carlos Castorena Lugo             19130899
+:*                Owen Ortega Flores                19130953
+:*                José Eduardo Espino Ramírez       19130905
+:*                Arturo Fernández Álvarez          19130910
+:*
+:*  Fecha       : 06/Dic/2023
+:*  Compilador  : Android Studio Giraffe
+:*  Descripción : Encargada de mostrar un listview basado en la tabla alumnos
+:*                dependiendo de la materia y muestra la lista con checkbox para
+:*                determinar si se cumple o no la tarea antes seleccionada.
+:*
+:*  Ultima modif: 12/Dic/2023
+:*  Fecha       Modificó             Motivo
+:*==========================================================================================
+:* 03/Dic/2023  David Pruenda		Creación del activity y listar alumnos de un array
+:* 08/Dic/2023  David Pruneda		Finalización de la implementación de la clase
+:* 08/Dic/2023  Carlos Castorena	Creación del prólogo
+:* 09/Dic/2023  Eduardo Espino	    Corrección de detalles en el prólogo
+:* 11/Dic/2023  Eduardo Espino      Implementación para leer archivo de texto
+:* 11/Dic/2023  David Pruenda       Corrección e implementación de insertar datos en la
+:*                                  BD con archivo de texto leido
+:* 12/Dic/2023  Owen Ortega         Prólogo modificado
+:*------------------------------------------------------------------------------------------*/
+
+
 package mx.edu.itl.proyagendaprofeapp;
 
 import androidx.annotation.Nullable;
@@ -60,23 +97,25 @@ public class AlumnosActivity extends AppCompatActivity {
         String [] alumnos = bdHelper.getAlumnosMateria ( idMateria );
 
         listaAlumnos = findViewById ( R.id.listaAlumnos );
-        ArrayAdapter adaptador = new ArrayAdapter ( this, android.R.layout.simple_list_item_multiple_choice
-                , alumnos );
+        ArrayAdapter adaptador = new ArrayAdapter (
+                this,
+                android.R.layout.simple_list_item_multiple_choice
+                ,alumnos );
         listaAlumnos.setAdapter ( adaptador );
 
         Boolean checked[]= bdHelper.getAlumnosTareaCumplio ( idTarea );
-        for(int i = 0; i < alumnos.length;i++){
-            listaAlumnos.setItemChecked ( i,checked [ i ] );
+        for ( int i = 0; i < alumnos.length; i++ ){
+            listaAlumnos.setItemChecked ( i, checked [ i ] );
         }
     }
 
     public void btnElementosSeleccionadosClick ( View v ) {
         //SELECT alumnos_tabla.nombre, alumnos_tabla.No_control, alumnos_tareas_tabla.cumplio from alumnos_tareas_tabla, alumnos_tabla WHERE alumnos_tabla.ID = alumnos_tareas_tabla.ID_ALUMNO AND alumnos_tareas_tabla.ID_TAREA = 1
-        seleccionados = new ArrayList<String>();
+        seleccionados = new ArrayList < String > ();
         SparseBooleanArray elementosMarcados = listaAlumnos.getCheckedItemPositions();
 
-        bdHelper.updateTareaCumplida(idTarea, elementosMarcados);
-        generarReporte( v, bdHelper );
+        bdHelper.updateTareaCumplida ( idTarea, elementosMarcados );
+        generarReporte ( v, bdHelper );
     }
 
     public void generarReporte ( View v, BDHelper db ) {
@@ -89,7 +128,7 @@ public class AlumnosActivity extends AppCompatActivity {
         String nombreArchivo = "reporte - " + fechaHora + ".txt";
 
 
-        File archivo = new File( rutaArchivo, nombreArchivo );
+        File archivo = new File ( rutaArchivo, nombreArchivo );
 
         // Escribir sobre el archivo
         try {
@@ -141,10 +180,11 @@ public class AlumnosActivity extends AppCompatActivity {
                 archivo = new File ( archivoUri.getPath() );
                 // Leer archivo
                 try {
-                    BufferedReader br = new BufferedReader ( new InputStreamReader( getContentResolver().openInputStream ( archivoUri ) ));
+                    BufferedReader br = new BufferedReader ( new InputStreamReader( getContentResolver().openInputStream ( archivoUri ) ) );
 
                     // Guadar lineas leidas
                     ArrayList < String > lineasLeidas = new ArrayList<>();
+
                     String linea;
                     while ( ( linea = br.readLine() ) != null  ) {
                         // Puede haber mas de un renglon que contenga materias

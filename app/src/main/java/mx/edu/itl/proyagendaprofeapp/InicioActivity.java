@@ -1,3 +1,41 @@
+/*------------------------------------------------------------------------------------------
+:*                         TECNOLOGICO NACIONAL DE MEXICO
+:*                                CAMPUS LA LAGUNA
+:*                     INGENIERIA EN SISTEMAS COMPUTACIONALES
+:*                             DESARROLLO EN ANDROID "A"
+:*
+:*                   SEMESTRE: AGO-DIC/2023    HORA: 08-09 HRS
+:*
+:*                  Activity que presenta la pantalla de inicio
+:*
+:*  Archivo     : InicioActivity.java
+:*  Autor       : David Alejandro Pruneda Meraz     19130960
+:*                Carlos Castorena Lugo             19130899
+:*                Owen Ortega Flores                19130953
+:*                José Eduardo Espino Ramírez       19130905
+:*                Arturo Fernández Álvarez          19130910
+:*
+:*  Fecha       : 06/Dic/2023
+:*  Compilador  : Android Studio Giraffe
+:*  Descripción : Dentro de esta clase se encuentran los botones
+:*                principales, agregar datos, eliminar info,
+:*                lista de materias y el info de acerca de...
+:*
+:*  Ultima modif: 12/Dic/2023
+:*  Fecha       Modificó             Motivo
+:*==========================================================================================
+:* 07/Dic/2023  Arturo Fernández	Creación del layout de inicio con activity
+:* 08/Dic/2023  David Pruneda 	    Finalización de la implementación del activity
+:* 08/Dic/2023  Carlos Castorena	Creación del prólogo
+:* 09/Dic/2023  Eduardo Espino	    Corrección de detalles del prólogo
+:* 11/Dic/2023  Eduardo Espino      Botón para  agregar datos por defecto eliminado
+:* 11/Dic/2023  Eduardo Espino      Despligue de layout que indica como agregar datos
+:* 11/Dic/2023  Eduardo Espino      Implementación de Alert Dialog para eliminación de la BD
+:* 11/Dic/2023  Eduardo Espino      Checador de permisos agregado
+:* 12/Dic/2023  Carlos Castorena    Prólogo Modificado
+:*------------------------------------------------------------------------------------------*/
+
+
 package mx.edu.itl.proyagendaprofeapp;
 
 import androidx.appcompat.app.AlertDialog;
@@ -30,41 +68,33 @@ public class InicioActivity extends AppCompatActivity {
 
         baseDatosHelper = new BDHelper ( this );
         ChecadorDePermisos.checarPermisos ( this, permisos );
-/*
-        baseDatosHelper.insertarMaterias ( "Desarrollo en Android", R.drawable.android );
-        baseDatosHelper.insertarAlumno ( "19130905", "José Eduardo Espino" );
-        baseDatosHelper.insertarAlumno ( "19130899", "Carlos Castorena Lugo" );
-        baseDatosHelper.AsignarAlumnoMateria( "Carlos Castorena Lugo", "Desarrollo en Android" );
-        baseDatosHelper.AsignarAlumnoMateria( "José Eduardo Espino", "Desarrollo en Android" );
-        baseDatosHelper.insertarTarea ( "appVideoView", "Desarrollo en Android" );
-        baseDatosHelper.insertarTarea ( "appReproducciónAudio", "Desarrollo en Android" );*/
     }
 
     public  void btnIrLista ( View v ) {
-        Intent intent = new Intent(  InicioActivity.this, MainActivity.class );
+        Intent intent = new Intent( InicioActivity.this, MainActivity.class );
         startActivity ( intent );
     }
 
     public  void btnBorrar ( View v ) {
         AlertDialog.Builder builder = new AlertDialog.Builder ( this );
         builder.setTitle ( "Eliminar Base de Datos" )
-        .setMessage ( "¿Está seguro de eliminar todos los datos referente a materias, tareas y alumnos?" )
-        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                baseDatosHelper.borrarBD();
-                Toast.makeText( InicioActivity.this, "Datos eliminados, inserte nuevos", Toast.LENGTH_SHORT).show();
-            }
-        })
-        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        })
-        .setCancelable ( false )
-        .create()
-        .show();
+            .setMessage ( "¿Está seguro de eliminar todos los datos referente a materias, tareas y alumnos?" )
+            .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    baseDatosHelper.borrarBD();
+                    Toast.makeText( InicioActivity.this, "Datos eliminados, inserte nuevos", Toast.LENGTH_SHORT).show();
+                }
+            })
+            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            })
+            .setCancelable ( false )
+            .create()
+            .show();
     }
 
     public void btnAcercaDe ( View v ) {

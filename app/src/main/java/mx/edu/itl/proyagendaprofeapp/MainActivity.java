@@ -1,3 +1,40 @@
+/*------------------------------------------------------------------------------------------
+:*                         TECNOLOGICO NACIONAL DE MEXICO
+:*                                CAMPUS LA LAGUNA
+:*                     INGENIERIA EN SISTEMAS COMPUTACIONALES
+:*                             DESARROLLO EN ANDROID "A"
+:*
+:*                   SEMESTRE: AGO-DIC/2023    HORA: 08-09 HRS
+:*
+:*               Activity que presenta la pantalla principal de la app
+:*
+:*  Archivo     : MainActivity.java
+:*  Autor       : David Alejandro Pruneda Meraz     19130960
+:*                Carlos Castorena Lugo             19130899
+:*                Owen Ortega Flores                19130953
+:*                José Eduardo Espino Ramírez       19130905
+:*                Arturo Fernández Álvarez          19130910
+:*
+:*  Fecha       : 06/Dic/2023
+:*  Compilador  : Android Studio Giraffe
+:*  Descripción : El activity despliega la lista de materias con su imagen y titulo como
+:*		          también presenta el botón para agregar más alumnos (función no aplicada).
+:*
+:*  Ultima modif: 12/Dic/2023
+:*  Fecha       Modificó             Motivo
+:*==========================================================================================
+:* 03/Dic/2023  David Pruneda		 Creación del proyecto y función básica del activity
+:*					                 (listar tareas de un array)
+:* 08/Dic/2023  David Pruneda		 Finalización de la implementación del activity
+:* 08/Dic/2023  Carlos Castorena	 Creación del prólogo
+:* 09/Dic/2023  Eduardo Espino	     Corrección de detalles en el prólogo
+:* 11/Dic/2023  Eduardo Espino       Implementación para leer archivo de texto
+:* 11/Dic/2023  David Pruneda        Corrección e implementación de insertar datos en la
+:*                                   BD con archivo de texto leido
+:* 12/Dic/2023  Carlos Castorena     Prólogo modificado
+:*------------------------------------------------------------------------------------------*/
+
+
 package mx.edu.itl.proyagendaprofeapp;
 
 import androidx.annotation.NonNull;
@@ -49,28 +86,29 @@ public class MainActivity extends AppCompatActivity {
         // Se ejecuta este codigo si ya hay datos
         if ( cursor.getCount() > 0 ) {
 
-            String materias[] = new String[cursor.getCount()];
-            int portadas[] = new int[cursor.getCount()];
-            String ids[] = new String[cursor.getCount()];
+            String materias[] = new String [ cursor.getCount() ];
+            int portadas[] = new int [ cursor.getCount() ];
+            String ids[] = new String [ cursor.getCount() ];
+
             int i = 0;
             cursor.moveToFirst();
             do {
                 // Se obtienen los valores del renglon actual
-                ids [ i ] = String.valueOf(cursor.getInt(0));
-                materias [ i ] = cursor.getString(1);
-                portadas [ i ] = cursor.getInt(2);
+                ids [ i ] = String.valueOf (cursor.getInt(0 ) );
+                materias [ i ] = cursor.getString (1 );
+                portadas [ i ] = cursor.getInt (2 );
                 i++;
-            } while (cursor.moveToNext());
+            } while ( cursor.moveToNext() );
 
             // Inciar SQLite
-            baseDatosHelper = new BDHelper(MainActivity.this);
+            baseDatosHelper = new BDHelper ( MainActivity.this );
 
             // Iniciar listview
-            lstvMaterias = findViewById(R.id.listaMaterias);
+            lstvMaterias = findViewById ( R.id.listaMaterias );
 
             // Se establece el adaptador para este listview
-            AdaptadorMateria adaptador = new AdaptadorMateria(this, materias, portadas);
-            lstvMaterias.setAdapter(adaptador);
+            AdaptadorMateria adaptador = new AdaptadorMateria ( this, materias, portadas );
+            lstvMaterias.setAdapter ( adaptador );
 
             // Establecemos el listener para el evento OnItemClick  del ListView
             lstvMaterias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -79,9 +117,9 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, TareasActivity.class);
 
                     // Mandar id de la materia
-                    intent.putExtra( "idMateria", ids [ i ] );
-                    intent.putExtra("nombre",materias[i]);
-                    startActivity(intent);
+                    intent.putExtra ( "idMateria", ids [ i ] );
+                    intent.putExtra ( "nombre", materias [ i ] );
+                    startActivity ( intent );
                 }
             });
         }
@@ -117,11 +155,14 @@ public class MainActivity extends AppCompatActivity {
                 archivo = new File ( archivoUri.getPath() );
                 // Leer archivo
                 try {
-                    BufferedReader br = new BufferedReader ( new InputStreamReader ( getContentResolver().openInputStream ( archivoUri ) ));
+                    BufferedReader br = new BufferedReader (
+                            new InputStreamReader ( getContentResolver().openInputStream ( archivoUri ) )
+                    );
 
                     // Guadar lineas leidas
                     ArrayList < String > lineasLeidas = new ArrayList<>();
                     String linea;
+
                     while ( ( linea = br.readLine() ) != null  ) {
                         // Puede haber mas de un renglon que contenga materias
                         lineasLeidas.add ( linea );
@@ -130,12 +171,12 @@ public class MainActivity extends AppCompatActivity {
                     if ( lineasLeidas.size() > 0 ) {
                         // Separar valores por las comas (puede haber mas de una linea en el txt)
                         for ( int i = 0; i < lineasLeidas.size(); i++ ) {
-                            String materias[] = lineasLeidas.get ( i ).split(",");
+                            String materias[] = lineasLeidas.get ( i ).split ( "," );
 
-                            for (int j = 0; j < materias.length; j++) {
+                            for (int j = 0; j < materias.length; j++ ) {
                                 // Insertar materias
-                                baseDatosHelper.insertarMaterias(materias[j]);
-                                Toast.makeText(this, materias[j], Toast.LENGTH_SHORT).show();
+                                baseDatosHelper.insertarMaterias ( materias [ j ] );
+                                Toast.makeText ( this, materias [ j ], Toast.LENGTH_SHORT ).show();
                                 finish();
                             }
                         }
@@ -173,11 +214,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Obteniendo las referenacias del layout del renglon
-            //ImageView portada = convertView.findViewById ( R.id.imgvMateria );
             TextView titulo = convertView.findViewById ( R.id.txtMateria );
 
             // Sobreescribir valores
-            //portada.setImageResource ( portadas[ position ] );
             titulo.setText ( materias [ position ] );
 
             return convertView;

@@ -111,7 +111,7 @@
         android:layout_marginStart="41dp"
         android:layout_marginEnd="41dp"
         android:layout_marginBottom="58dp"
-        android:text="Ej. \n19130905,José Eduardo Espino \n19130899,Carlos Castorena Lugo"
+        android:text="Ej. \n19130905,Espino Ramírez Eduardo \n19130899,Castorena Lugo Carlos"
         android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/btnVolverMain2"
         app:layout_constraintEnd_toEndOf="parent"

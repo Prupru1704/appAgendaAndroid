@@ -1,3 +1,32 @@
+/*------------------------------------------------------------------------------------------
+:*                         TECNOLOGICO NACIONAL DE MEXICO
+:*                                CAMPUS LA LAGUNA
+:*                     INGENIERIA EN SISTEMAS COMPUTACIONALES
+:*                             DESARROLLO EN ANDROID "A"
+:*
+:*                   SEMESTRE: AGO-DIC/2023    HORA: 08-09 HRS
+:*
+:*                Clase que verefica permisos concedidos en la app
+:*
+:*  Archivo     : ChecadorDePermisos.java
+:*  Autor       : David Alejandro Pruneda Meraz     19130960
+:*                Carlos Castorena Lugo             19130899
+:*                Owen Ortega Flores                19130953
+:*                José Eduardo Espino Ramirez       19130905
+:*                Arturo Fernandez Alvarez          19130910
+:*
+:*  Fecha       : 12/Dic/2023
+:*  Compilador  : Android Studio Giraffe
+:*  Descripción : La clase toma un grupo de permisos, verifica si están conceiddos, en
+:*                caso contrario se cerrará la app hasta que se concedan
+:*
+:*  Ultima modif: 12/Dic/2023
+:*  Fecha       Modificó             Motivo
+:*==========================================================================================
+:* 12/Dic/2023  Eduardo Espino       Prólogo añadido
+:*------------------------------------------------------------------------------------------*/
+
+
 package mx.edu.itl.proyagendaprofeapp.util;
 
 
